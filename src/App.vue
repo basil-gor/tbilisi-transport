@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-</script>
-
 <template>
   <header>
     <img
@@ -14,7 +9,7 @@ import HelloWorld from "./components/HelloWorld.vue";
     />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="Tbilisi transport alpha" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
@@ -22,9 +17,19 @@ import HelloWorld from "./components/HelloWorld.vue";
       </nav>
     </div>
   </header>
-
   <RouterView />
+  {{ info }}
 </template>
+
+<script setup lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+import HelloWorld from "./components/HelloWorld.vue";
+import { ref } from "vue";
+import { ArrivingApi } from "@/api/arriving";
+
+const info = ref();
+ArrivingApi.getArrivalTime().then((value) => (info.value = value));
+</script>
 
 <style scoped>
 header {

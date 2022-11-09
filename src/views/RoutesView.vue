@@ -1,15 +1,28 @@
 <template>
-  <div v-for="route in infoRoutes" :key="route.Id">
-    {{ route.RouteNumber }}: {{ route.StopA }} - {{ route.StopB }}
-    <br />
-  </div>
+  <table style="text-align: left; width: 100%">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Route</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="route in allRoutes" :key="route.id">
+        <td>{{ route.routeNumber }}</td>
+        <td>
+          {{
+            route.stopA === route.stopB
+              ? route.stopA
+              : `${route.stopA} - ${route.stopB}`
+          }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import type { RouteInfo } from "@/api/arriving";
-import { ArrivingApi } from "@/api/arriving";
+import { useTransportStore } from "@/stores/transport";
 
-const infoRoutes = ref<RouteInfo[]>([]);
-ArrivingApi.getAllRoutes().then((value) => (infoRoutes.value = value));
+const { allRoutes } = useTransportStore();
 </script>

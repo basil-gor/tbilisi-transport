@@ -1,6 +1,6 @@
 {
   "name": "tbilisi-transport",
-  "homepage": "https://<github-username>.github.io/<project-repo>",
+  "homepage": "https://<github-username>.github.io/<project-repo>/index.html",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist -t true"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",

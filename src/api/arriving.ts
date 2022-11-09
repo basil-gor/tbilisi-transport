@@ -1,13 +1,34 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 
-interface ArrivingInfo {
+export interface ArrivingInfoDTO {
+  routeNumber: string;
+  destinationStopName: string;
+  arrivalTime: number;
+}
+
+interface ArrivingInfoResponse {
   RouteNumber: string;
   DestinationStopName: string;
   ArrivalTime: number;
 }
 
-export interface RouteInfo {
+type ArrivalTimeResponse = {
+  ArrivalTime: ArrivingInfoResponse[];
+};
+
+export interface RouteInfoDTO {
+  color: string;
+  id: string;
+  longName: string;
+  routeNumber: string;
+  routeStops: [];
+  stopA: string;
+  stopB: string;
+  type: "bus" | "metro";
+}
+
+interface RouteInfoResponse {
   Color: string;
   Id: string;
   LongName: string;
@@ -18,48 +39,71 @@ export interface RouteInfo {
   Type: "bus" | "metro";
 }
 
-type ArrivalTimeResponse = {
-  ArrivalTime: ArrivingInfo[];
+type RoutesResponse = {
+  Route: RouteInfoResponse[];
 };
 
-type RouteInfoResponse = {
-  Route: RouteInfo[];
-};
-
-export interface StopResponse {
-  code: string;
+interface StopInfoResponse {
+  code?: string;
   id: string;
   lat: number;
   lon: number;
   name: string;
 }
 
+export interface StopInfoDTO extends StopInfoResponse {
+  code: string;
+}
+
+type StopsResponse = StopInfoResponse[];
+
 export const ArrivingApi = {
-  getArrivalTime(): Promise<ArrivingInfo[]> {
+  getArrivalTime(stopId: string): Promise<ArrivingInfoDTO[]> {
     return axios
       .get(
         // TODO use parameters
-        "https://transfer.msplus.ge:2443/otp/routers/ttc/stopArrivalTimes?stopId=3990"
+        `https://transfer.msplus.ge:2443/otp/routers/ttc/stopArrivalTimes?stopId=${stopId}`
       )
-      .then(
-        (response: AxiosResponse<ArrivalTimeResponse>) =>
-          response.data.ArrivalTime
+      .then((response: AxiosResponse<ArrivalTimeResponse>) =>
+        response.data.ArrivalTime.map(
+          (arrivalTimeRow: ArrivingInfoResponse) => ({
+            routeNumber: arrivalTimeRow.RouteNumber,
+            destinationStopName: arrivalTimeRow.DestinationStopName,
+            arrivalTime: arrivalTimeRow.ArrivalTime,
+          })
+        )
       );
   },
-  getAllRoutes(): Promise<RouteInfo[]> {
+  getAllRoutes(): Promise<RouteInfoDTO[]> {
     return axios
       .get(
         // TODO use parameters
         "https://transfer.msplus.ge:2443/otp/routers/ttc/routes"
       )
-      .then(
-        (response: AxiosResponse<RouteInfoResponse>) => response.data.Route
+      .then((response: AxiosResponse<RoutesResponse>) =>
+        response.data.Route.map((routeInfo: RouteInfoResponse) => ({
+          color: routeInfo.Color,
+          id: routeInfo.Id,
+          longName: routeInfo.LongName,
+          routeNumber: routeInfo.RouteNumber,
+          routeStops: routeInfo.RouteStops,
+          stopA: routeInfo.StopA,
+          stopB: routeInfo.StopB,
+          type: routeInfo.Type,
+        }))
       );
   },
-  getAllStops(): Promise<StopResponse[]> {
+  getAllStops(): Promise<StopInfoDTO[]> {
     return axios
       .get("https://transfer.msplus.ge:2443/otp/routers/ttc/index/stops")
-      .then((response: AxiosResponse<StopResponse[]>) => response.data);
+      .then((response: AxiosResponse<StopsResponse>) =>
+        response.data
+          .filter((stop) => stop.code !== undefined)
+          .map((stop) => ({
+            code: stop.code !== undefined ? stop.code : "", // TODO
+            ...stop,
+          }))
+      );
   },
   routeStops:
     "https://transfer.msplus.ge:2443/otp/routers/ttc/routeStops?routeNumber=101&forward=1",

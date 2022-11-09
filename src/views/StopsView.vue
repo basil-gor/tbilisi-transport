@@ -1,15 +1,26 @@
 <template>
-  <div v-for="stop in allStops" :key="stop.id">
-    {{ stop.id }}: {{ stop.name }}
-    <br />
-  </div>
+  <table style="text-align: left; width: 100%">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="stop in allStops" :key="stop.id">
+        <td>
+          <RouterLink :to="`/stop/${stop.code}`">{{ stop.code }}</RouterLink>
+        </td>
+        <td>
+          <RouterLink :to="`/stop/${stop.code}`">{{ stop.name }}</RouterLink>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import type { StopResponse } from "@/api/arriving";
-import { ArrivingApi } from "@/api/arriving";
+import { useTransportStore } from "@/stores/transport";
 
-const allStops = ref<StopResponse[]>([]);
-ArrivingApi.getAllStops().then((value) => (allStops.value = value));
+const { allStops } = useTransportStore();
 </script>

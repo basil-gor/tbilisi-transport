@@ -1,1 +1,0 @@
-import{A as r}from"./arriving.37b85fba.js";import{d as s,r as a,t as n,u as i}from"./index.c131ef3a.js";const f=s({__name:"StopView",setup(p){const o=i().params.stopId.toString(),t=a();return r.getArrivalTime(o).then(e=>t.value=e),(e,m)=>n(t.value)}});export{f as default};

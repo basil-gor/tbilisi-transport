@@ -6,7 +6,8 @@
       <nav>
         <RouterLink to="/routes">Routes</RouterLink>
         <RouterLink to="/stops">Stops</RouterLink>
-        <RouterLink to="/stop/3990">Stop</RouterLink>
+        <RouterLink to="/stop/3990">Stop 3990</RouterLink>
+        <RouterLink to="/stop/389">Route 389</RouterLink>
       </nav>
     </div>
   </header>

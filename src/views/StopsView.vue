@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { useTransportStore } from "@/stores/transport";
+import { storeToRefs } from "pinia";
 
-const { allStops } = useTransportStore();
+const { allStops } = storeToRefs(useTransportStore());
 </script>

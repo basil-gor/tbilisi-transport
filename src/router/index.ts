@@ -23,6 +23,11 @@ const router = createRouter({
       name: "stop",
       component: () => import("@/views/StopView.vue"),
     },
+    {
+      path: "/route/:routeId",
+      name: "route",
+      component: () => import("@/views/RouteView.vue"),
+    },
   ],
 });
 

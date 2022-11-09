@@ -1,1 +1,0 @@
-import{A as t}from"./arriving.f639c103.js";import{d as a,r as i,t as n}from"./index.39140e2d.js";const _=a({__name:"RouteView",setup(o){const e=i();return t.getArrivalTime().then(r=>e.value=r),(r,s)=>n(e.value)}});export{_ as default};

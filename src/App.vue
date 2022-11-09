@@ -13,22 +13,18 @@
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/routes">Routes</RouterLink>
+        <RouterLink to="/stops">Stops</RouterLink>
+        <RouterLink to="/route">Route</RouterLink>
       </nav>
     </div>
   </header>
   <RouterView />
-  {{ info }}
 </template>
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import { ref } from "vue";
-import { ArrivingApi } from "@/api/arriving";
-
-const info = ref();
-ArrivingApi.getArrivalTime().then((value) => (info.value = value));
 </script>
 
 <style scoped>

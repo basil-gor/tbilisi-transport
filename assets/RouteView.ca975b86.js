@@ -1,0 +1,1 @@
+import{d as e,t as o,u as r,q as s}from"./index.d58d2666.js";const m=e({__name:"RouteView",setup(n){const t=s().params.routeId.toString();return(a,i)=>"This is Route page. Not implemented. "+o(r(t))}});export{m as default};

@@ -1,0 +1,1 @@
+import{u as s}from"./transport.62601bd9.js";import{d as t,s as r,u as o,n as a,j as n,o as p}from"./index.d58d2666.js";import{_ as m}from"./StopsTable.vue_vue_type_script_setup_true_lang.2395f2aa.js";const d=t({__name:"StopsView",setup(c){const{allStops:e}=r(s());return(_,u)=>o(e).length!==0?(p(),a(m,{key:0,stops:o(e)},null,8,["stops"])):n("",!0)}});export{d as default};

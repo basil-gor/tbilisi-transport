@@ -1,10 +1,18 @@
 <template>
   <h2>Stops:</h2>
-  <StopsTable :stops="favoritesStops"></StopsTable>
+  <StopsTable
+    v-if="favoritesStops.length !== 0"
+    :stops="favoritesStops"
+  ></StopsTable>
+  <div v-else>You have no favorites stops</div>
   <br />
   <br />
   <h2>Routes:</h2>
-  <RoutesTable :routes="favoritesRoutes"></RoutesTable>
+  <RoutesTable
+    v-if="favoritesRoutes.length !== 0"
+    :routes="favoritesRoutes"
+  ></RoutesTable>
+  <div v-else>You have no favorites routes</div>
 </template>
 
 <script setup lang="ts">

@@ -1,10 +1,10 @@
 <template>
-  <table style="text-align: left; width: 100%">
+  <table style="text-align: left">
     <thead>
       <tr>
         <th>Code</th>
-        <th>Name</th>
-        <th>Actions</th>
+        <th class="table-middle-td">Name</th>
+        <th style="width: 50px"></th>
       </tr>
     </thead>
     <tbody ref="tbodyElement">
@@ -12,18 +12,14 @@
         <td>
           <RouterLink :to="`/stop/${stop.code}`">{{ stop.code }}</RouterLink>
         </td>
-        <td>
+        <td class="table-middle-td">
           <RouterLink :to="`/stop/${stop.code}`">{{ stop.name }}</RouterLink>
         </td>
-        <td
-          @click="addOrRemoveStopInFavorites(stop)"
-          style="cursor: pointer; color: #0aa0c9"
-        >
-          {{
-            isStopInFavorites(stop)
-              ? "Remove from favorites"
-              : "Add to favorites"
-          }}
+        <td style="text-align: center">
+          <FavoriteButton
+            :is-full="isStopInFavorites(stop)"
+            @click="addOrRemoveStopInFavorites(stop)"
+          />
         </td>
       </tr>
       <tr v-if="isBigStopsCount">
@@ -43,6 +39,7 @@
 import type { StopInfoDTO } from "@/api/arriving";
 import { useTransportStore } from "@/stores/transport";
 import { ref } from "vue";
+import FavoriteButton from "@/components/FavoriteButton.vue";
 
 const props = defineProps<{
   stops: StopInfoDTO[];
@@ -70,3 +67,9 @@ const showMore = () => {
 
 const { addOrRemoveStopInFavorites, isStopInFavorites } = useTransportStore();
 </script>
+
+<style scoped>
+.table-middle-td {
+  min-width: 50vw;
+}
+</style>

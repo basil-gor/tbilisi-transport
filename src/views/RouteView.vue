@@ -1,23 +1,14 @@
 <template>
-  <h2>Route {{ routeId }}</h2>
-  <template v-if="currentRoute !== undefined">
-    <div
-      @click="
-        () =>
-          currentRoute !== undefined &&
-          addOrRemoveRouteInFavorites(currentRoute)
-      "
-      style="cursor: pointer; color: #0aa0c9"
-    >
-      {{
-        isRouteInFavorites(currentRoute)
-          ? "Remove from favorites"
-          : "Add to favorites"
-      }}
-    </div>
-  </template>
+  <h2>
+    Route {{ routeId }}
+    <FavoriteButton
+      v-if="currentRoute !== undefined"
+      :is-full="isRouteInFavorites(currentRoute)"
+      style="margin: 5px"
+      @click="addOrRemoveRouteInFavorites(currentRoute)"
+    />
+  </h2>
   <br />
-
   <template v-if="schemeForward !== undefined">
     Forward:
     <div v-if="schemeForward.directionDescription">
@@ -51,6 +42,7 @@ import type { RouteSchemeDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 import { computed, ref } from "vue";
 import { useTransportStore } from "@/stores/transport";
+import FavoriteButton from "@/components/FavoriteButton.vue";
 
 const route = useRoute();
 const routeId: string = route.params.routeId.toString(); // TODO

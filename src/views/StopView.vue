@@ -1,20 +1,13 @@
 <template>
-  <h2>Stop {{ stopCode }}</h2>
-  <template v-if="currentStop !== undefined">
-    <div
-      @click="
-        () =>
-          currentStop !== undefined && addOrRemoveStopInFavorites(currentStop)
-      "
-      style="cursor: pointer; color: #0aa0c9"
-    >
-      {{
-        isStopInFavorites(currentStop)
-          ? "Remove from favorites"
-          : "Add to favorites"
-      }}
-    </div>
-  </template>
+  <h2>
+    Stop {{ stopCode }}
+    <FavoriteButton
+      v-if="currentStop !== undefined"
+      :is-full="isStopInFavorites(currentStop)"
+      style="margin: 5px"
+      @click="addOrRemoveStopInFavorites(currentStop)"
+    />
+  </h2>
   <br />
   <table style="text-align: left; width: 100%">
     <thead>
@@ -43,6 +36,7 @@ import type { ArrivingInfoDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 import { useRoute } from "vue-router";
 import { useTransportStore } from "@/stores/transport";
+import FavoriteButton from "@/components/FavoriteButton.vue";
 
 const route = useRoute();
 const stopCode: string = route.params.stopCode.toString(); // TODO

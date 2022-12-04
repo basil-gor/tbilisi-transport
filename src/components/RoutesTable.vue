@@ -1,10 +1,10 @@
 <template>
-  <table style="text-align: left; width: 100%">
+  <table style="text-align: left">
     <thead>
       <tr>
         <th>Number</th>
-        <th>Route</th>
-        <th>Actions</th>
+        <th class="table-middle-td">Route</th>
+        <th style="width: 50px"></th>
       </tr>
     </thead>
     <tbody>
@@ -14,7 +14,7 @@
             >{{ route.routeNumber }}
           </RouterLink>
         </td>
-        <td>
+        <td class="table-middle-td">
           <RouterLink :to="`/route/${route.routeNumber}`"
             >{{
               route.stopA === route.stopB
@@ -23,15 +23,11 @@
             }}
           </RouterLink>
         </td>
-        <td
-          @click="addOrRemoveRouteInFavorites(route)"
-          style="cursor: pointer; color: #0aa0c9"
-        >
-          {{
-            isRouteInFavorites(route)
-              ? "Remove from favorites"
-              : "Add to favorites"
-          }}
+        <td style="text-align: center">
+          <FavoriteButton
+            :is-full="isRouteInFavorites(route)"
+            @click="addOrRemoveRouteInFavorites(route)"
+          />
         </td>
       </tr>
     </tbody>
@@ -42,6 +38,7 @@
 import type { RouteInfoDTO } from "@/api/arriving";
 import { useTransportStore } from "@/stores/transport";
 import type { PropType } from "vue";
+import FavoriteButton from "@/components/FavoriteButton.vue";
 
 defineProps({
   routes: {
@@ -52,3 +49,9 @@ defineProps({
 
 const { addOrRemoveRouteInFavorites, isRouteInFavorites } = useTransportStore();
 </script>
+
+<style scoped>
+.table-middle-td {
+  min-width: 50vw;
+}
+</style>

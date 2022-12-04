@@ -5,6 +5,7 @@ import type { RouteInfoDTO, StopInfoDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 
 export const useTransportStore = defineStore("transport", () => {
+  // TODO change favorites to ids
   const favoritesStops = useStorage("favoritesStops", new Set<StopInfoDTO>());
   const favoritesRoutes = useStorage(
     "favoritesRoutes",

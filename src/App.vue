@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="Tbilisi transport alpha" />
+      <AppTttle msg="Tbilisi transport" />
 
       <nav>
         <RouterLink to="/favorites">Favorites</RouterLink>
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+import AppTttle from "./components/AppTttle.vue";
 </script>
 
 <style scoped>

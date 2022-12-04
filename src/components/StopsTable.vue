@@ -17,8 +17,8 @@
         </td>
         <td style="text-align: center">
           <FavoriteButton
-            :is-full="isStopInFavorites(stop)"
-            @click="addOrRemoveStopInFavorites(stop)"
+            :is-full="isStopInFavorites(stop.code)"
+            @click="addOrRemoveStopInFavorites(stop.code)"
           />
         </td>
       </tr>
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import type { StopInfoDTO } from "@/api/arriving";
-import { useTransportStore } from "@/stores/transport";
+import { useTransportStopsStore } from "@/stores/transport-stops";
 import { ref } from "vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
 
@@ -65,7 +65,8 @@ const showMore = () => {
   stopsToView.value.push(...dataToAdd);
 };
 
-const { addOrRemoveStopInFavorites, isStopInFavorites } = useTransportStore();
+const { addOrRemoveStopInFavorites, isStopInFavorites } =
+  useTransportStopsStore();
 </script>
 
 <style scoped>

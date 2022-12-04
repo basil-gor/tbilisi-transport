@@ -3,9 +3,9 @@
     Stop {{ stopCode }}
     <FavoriteButton
       v-if="currentStop !== undefined"
-      :is-full="isStopInFavorites(currentStop)"
+      :is-full="isStopInFavorites(currentStop.code)"
       style="margin: 5px"
-      @click="addOrRemoveStopInFavorites(currentStop)"
+      @click="addOrRemoveStopInFavorites(currentStop.code)"
     />
   </h2>
   <br />
@@ -35,14 +35,14 @@ import { computed, ref } from "vue";
 import type { ArrivingInfoDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 import { useRoute } from "vue-router";
-import { useTransportStore } from "@/stores/transport";
+import { useTransportStopsStore } from "@/stores/transport-stops";
 import FavoriteButton from "@/components/FavoriteButton.vue";
 
 const route = useRoute();
 const stopCode: string = route.params.stopCode.toString(); // TODO
 
 const { addOrRemoveStopInFavorites, isStopInFavorites, getStopByCode } =
-  useTransportStore();
+  useTransportStopsStore();
 
 const currentStop = computed(() => getStopByCode(stopCode)); // TODO
 

@@ -3,9 +3,9 @@
     Route {{ routeId }}
     <FavoriteButton
       v-if="currentRoute !== undefined"
-      :is-full="isRouteInFavorites(currentRoute)"
+      :is-full="isRouteInFavorites(currentRoute.routeNumber)"
       style="margin: 5px"
-      @click="addOrRemoveRouteInFavorites(currentRoute)"
+      @click="addOrRemoveRouteInFavorites(currentRoute.routeNumber)"
     />
   </h2>
   <br />
@@ -41,23 +41,23 @@ import { useRoute } from "vue-router";
 import type { RouteSchemeDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 import { computed, ref } from "vue";
-import { useTransportStore } from "@/stores/transport";
 import FavoriteButton from "@/components/FavoriteButton.vue";
+import { useTransportRoutesStore } from "@/stores/transport-routes";
 
 const route = useRoute();
-const routeId: string = route.params.routeId.toString(); // TODO
+const routeNumber: string = route.params.routeNumber.toString(); // TODO
 
-const { addOrRemoveRouteInFavorites, isRouteInFavorites, getRouteById } =
-  useTransportStore();
+const { addOrRemoveRouteInFavorites, isRouteInFavorites, getRouteByNumber } =
+  useTransportRoutesStore();
 
-const currentRoute = computed(() => getRouteById(routeId)); // TODO
+const currentRoute = computed(() => getRouteByNumber(routeNumber)); // TODO
 
 const schemeForward = ref<RouteSchemeDTO>();
 const schemeBackward = ref<RouteSchemeDTO>();
-ArrivingApi.getRouteScheme(routeId, true).then(
+ArrivingApi.getRouteScheme(routeNumber, true).then(
   (res) => (schemeForward.value = res)
 );
-ArrivingApi.getRouteScheme(routeId, false).then(
+ArrivingApi.getRouteScheme(routeNumber, false).then(
   (res) => (schemeBackward.value = res)
 );
 </script>

@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { useTransportStore } from "@/stores/transport";
+import { useTransportStopsStore } from "@/stores/transport-stops";
 import { storeToRefs } from "pinia";
 import StopsTable from "@/components/StopsTable.vue";
 
-const { allStops } = storeToRefs(useTransportStore());
+const { allStops } = storeToRefs(useTransportStopsStore());
 </script>

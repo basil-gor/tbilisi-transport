@@ -29,7 +29,7 @@ const router = createRouter({
       component: () => import("@/views/StopView.vue"),
     },
     {
-      path: "/route/:routeId",
+      path: "/route/:routeNumber",
       name: "route",
       component: () => import("@/views/RouteView.vue"),
     },

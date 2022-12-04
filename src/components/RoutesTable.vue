@@ -25,8 +25,8 @@
         </td>
         <td style="text-align: center">
           <FavoriteButton
-            :is-full="isRouteInFavorites(route)"
-            @click="addOrRemoveRouteInFavorites(route)"
+            :is-full="isRouteInFavorites(route.routeNumber)"
+            @click="addOrRemoveRouteInFavorites(route.routeNumber)"
           />
         </td>
       </tr>
@@ -36,9 +36,9 @@
 
 <script setup lang="ts">
 import type { RouteInfoDTO } from "@/api/arriving";
-import { useTransportStore } from "@/stores/transport";
 import type { PropType } from "vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
+import { useTransportRoutesStore } from "@/stores/transport-routes";
 
 defineProps({
   routes: {
@@ -47,7 +47,8 @@ defineProps({
   },
 });
 
-const { addOrRemoveRouteInFavorites, isRouteInFavorites } = useTransportStore();
+const { addOrRemoveRouteInFavorites, isRouteInFavorites } =
+  useTransportRoutesStore();
 </script>
 
 <style scoped>

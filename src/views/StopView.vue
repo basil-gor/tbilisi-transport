@@ -3,9 +3,9 @@
     Stop {{ stopCode }}
     <FavoriteButton
       v-if="currentStop !== undefined"
-      :is-full="isStopInFavorites(currentStop.code)"
+      :is-full="isStopInFavorites(stopCode)"
       style="margin: 5px"
-      @click="addOrRemoveStopInFavorites(currentStop.code)"
+      @click="addOrRemoveStopInFavorites(stopCode)"
     />
   </h2>
   <br />

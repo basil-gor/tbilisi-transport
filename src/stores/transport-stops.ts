@@ -32,10 +32,11 @@ export const useTransportStopsStore = defineStore("transport-stops", () => {
       : favoritesStopsCodes.value.add(stopCode);
   }
 
-  const favoritesStops = computed(() =>
-    Array.from(favoritesStopsCodes.value).map((stopCode) =>
-      getStopByCode(stopCode)
-    )
+  const favoritesStops = computed<StopInfoDTO[]>(
+    () =>
+      Array.from(favoritesStopsCodes.value)
+        .map((stopCode) => getStopByCode(stopCode))
+        .filter((stop) => stop !== undefined) as StopInfoDTO[]
   );
 
   return {

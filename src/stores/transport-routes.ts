@@ -27,10 +27,11 @@ export const useTransportRoutesStore = defineStore("transport-routes", () => {
       : favoritesRoutesNumbers.value.add(routeNumber);
   }
 
-  const favoritesRoutes = computed(() =>
-    Array.from(favoritesRoutesNumbers.value).map((routeNumber) =>
-      getRouteByNumber(routeNumber)
-    )
+  const favoritesRoutes = computed<RouteInfoDTO[]>(
+    () =>
+      Array.from(favoritesRoutesNumbers.value)
+        .map((routeNumber) => getRouteByNumber(routeNumber))
+        .filter((route) => route !== undefined) as RouteInfoDTO[]
   );
 
   return {

@@ -1,10 +1,10 @@
 <template>
   <h2>Stops:</h2>
-  <StopsTable :stops="Array.from(favoritesStops)"></StopsTable>
+  <StopsTable :stops="favoritesStops"></StopsTable>
   <br />
   <br />
   <h2>Routes:</h2>
-  <RoutesTable :routes="Array.from(favoritesRoutes)"></RoutesTable>
+  <RoutesTable :routes="favoritesRoutes"></RoutesTable>
 </template>
 
 <script setup lang="ts">

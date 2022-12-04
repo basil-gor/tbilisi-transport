@@ -1,11 +1,11 @@
 <template>
   <h2>
-    Route {{ routeId }}
+    Route {{ routeNumber }}
     <FavoriteButton
       v-if="currentRoute !== undefined"
-      :is-full="isRouteInFavorites(currentRoute.routeNumber)"
+      :is-full="isRouteInFavorites(routeNumber)"
       style="margin: 5px"
-      @click="addOrRemoveRouteInFavorites(currentRoute.routeNumber)"
+      @click="addOrRemoveRouteInFavorites(routeNumber)"
     />
   </h2>
   <br />

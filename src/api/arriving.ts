@@ -57,12 +57,46 @@ export interface StopInfoDTO extends StopInfoResponse {
 
 type StopsResponse = StopInfoResponse[];
 
+interface RouteSchemeResponse {
+  DirectionDescription?: string;
+  Stops: [
+    {
+      Forward: boolean;
+      HasBoard: boolean;
+      Lat: number;
+      Lon: number;
+      Name: string;
+      Routes: string[];
+      StopId: string; //code
+      Type: "bus" | "metro";
+      Virtual: boolean;
+    }
+  ];
+}
+
+export interface StopInfoInRouteSchemeDTO {
+  code: string;
+  lat: number;
+  lon: number;
+  name: string;
+  type: "bus" | "metro";
+  isVirtual: boolean;
+  routesIds: string[];
+  isForward: boolean;
+  hasBoard: boolean;
+}
+
+export interface RouteSchemeDTO {
+  directionDescription?: string;
+  stops: StopInfoInRouteSchemeDTO[];
+}
+
 export const ArrivingApi = {
-  getArrivalTime(stopId: string): Promise<ArrivingInfoDTO[]> {
+  getArrivalTime(stopCode: string): Promise<ArrivingInfoDTO[]> {
     return axios
       .get(
         // TODO use parameters
-        `https://transfer.msplus.ge:2443/otp/routers/ttc/stopArrivalTimes?stopId=${stopId}`
+        `https://transfer.msplus.ge:2443/otp/routers/ttc/stopArrivalTimes?stopId=${stopCode}`
       )
       .then((response: AxiosResponse<ArrivalTimeResponse>) =>
         response.data.ArrivalTime.map(
@@ -138,6 +172,31 @@ export const ArrivingApi = {
     "https://transfer.msplus.ge:2443/otp/routers/ttc/routeInfo?routeNumber=101&type=bus",
   routeDTO: {
     //TODO
+  },
+  getRouteScheme(
+    routeNumber: string,
+    isForward: boolean
+  ): Promise<RouteSchemeDTO> {
+    return axios
+      .get(
+        `https://transfer.msplus.ge:2443/otp/routers/ttc/schemeStops?routeNumber=${routeNumber}&forward=${
+          isForward ? 1 : 0
+        }`
+      )
+      .then((response: AxiosResponse<RouteSchemeResponse>) => ({
+        directionDescription: response.data.DirectionDescription,
+        stops: response.data.Stops.map((stopResponse) => ({
+          code: stopResponse.StopId,
+          lat: stopResponse.Lat,
+          lon: stopResponse.Lon,
+          name: stopResponse.Name,
+          type: stopResponse.Type,
+          isVirtual: stopResponse.Virtual,
+          routesIds: stopResponse.Routes,
+          isForward: stopResponse.Forward,
+          hasBoard: stopResponse.HasBoard,
+        })),
+      }));
   },
   routeScheme:
     "https://transfer.msplus.ge:2443/otp/routers/ttc/schemeStops?routeNumber=101&forward=1",

@@ -1,4 +1,21 @@
 <template>
+  <h2>Stop {{ stopCode }}</h2>
+  <template v-if="currentStop !== undefined">
+    <div
+      @click="
+        () =>
+          currentStop !== undefined && addOrRemoveStopInFavorites(currentStop)
+      "
+      style="cursor: pointer; color: #0aa0c9"
+    >
+      {{
+        isStopInFavorites(currentStop)
+          ? "Remove from favorites"
+          : "Add to favorites"
+      }}
+    </div>
+  </template>
+  <br />
   <table style="text-align: left; width: 100%">
     <thead>
       <tr>
@@ -21,16 +38,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { ArrivingInfoDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 import { useRoute } from "vue-router";
+import { useTransportStore } from "@/stores/transport";
 
 const route = useRoute();
-const stopId: string = route.params.stopId.toString(); // TODO
+const stopCode: string = route.params.stopCode.toString(); // TODO
+
+const { addOrRemoveStopInFavorites, isStopInFavorites, getStopByCode } =
+  useTransportStore();
+
+const currentStop = computed(() => getStopByCode(stopCode)); // TODO
 
 const arrivalTable = ref<ArrivingInfoDTO[]>();
-ArrivingApi.getArrivalTime(stopId).then(
+
+ArrivingApi.getArrivalTime(stopCode).then(
   (value) => (arrivalTable.value = value)
 );
 </script>

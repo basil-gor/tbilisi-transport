@@ -1,12 +1,17 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
       name: "home",
-      redirect: "/stops",
+      redirect: "/favorites",
+    },
+    {
+      path: "/favorites",
+      name: "favorites",
+      component: () => import("@/views/FavotitesView.vue"),
     },
     {
       path: "/stops",
@@ -19,7 +24,7 @@ const router = createRouter({
       component: () => import("@/views/RoutesView.vue"),
     },
     {
-      path: "/stop/:stopId",
+      path: "/stop/:stopCode",
       name: "stop",
       component: () => import("@/views/StopView.vue"),
     },

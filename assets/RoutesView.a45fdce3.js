@@ -1,1 +1,0 @@
-import{d as e,s,a as t,u as r,o as a}from"./index.5297381e.js";import{R as u}from"./RoutesTable.055299c7.js";import{u as n}from"./transport-routes.cf691c01.js";import"./FavoriteButton.9cc61074.js";const R=e({__name:"RoutesView",setup(p){const{allRoutes:o}=s(n());return(m,c)=>(a(),t(u,{routes:r(o)},null,8,["routes"]))}});export{R as default};

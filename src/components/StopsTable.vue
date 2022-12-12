@@ -2,14 +2,14 @@
   <table style="text-align: left">
     <thead>
       <tr>
-        <th>Code</th>
+        <th style="width: 60px">Code</th>
         <th class="table-middle-td">Name</th>
         <th style="width: 50px"></th>
       </tr>
     </thead>
     <tbody ref="tbodyElement">
       <tr v-for="stop in stopsToView" :key="stop.id">
-        <td>
+        <td style="width: 60px">
           <RouterLink :to="`/stop/${stop.code}`">{{ stop.code }}</RouterLink>
         </td>
         <td class="table-middle-td">

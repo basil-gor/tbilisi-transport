@@ -1,5 +1,6 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
+import { LEGACY_ROUTES_NUMBERS_MATCHING } from "@/consts/legacy-stops-codes-matching";
 
 export interface ArrivingInfoDTO {
   routeNumber: string;
@@ -91,6 +92,15 @@ export interface RouteSchemeDTO {
   stops: StopInfoInRouteSchemeDTO[];
 }
 
+type RoutesAtStopResponse = {
+  agencyName: string; // "თბილისის სატრანსპორტო კომპანია",
+  color: string; // "11518A",
+  id: string; // "1:R13420",
+  longName: string; // "მ/ს დიდუბე - მ/ს სახელმწიფო უნივერსიტეტი",
+  mode: string; // "BUS",
+  shortName: string; // "89",
+}[];
+
 export const ArrivingApi = {
   getArrivalTime(stopCode: string): Promise<ArrivingInfoDTO[]> {
     return axios
@@ -168,6 +178,30 @@ export const ArrivingApi = {
       shortName: "89",
     },
   ],
+  /**
+   * Именно id, а не code и именно id, а не name
+   */
+  getRoutesNumbersAtStop(stopId: string): Promise<string[]> {
+    return axios
+      .get(
+        // TODO use parameters
+        `https://transfer.msplus.ge:2443/otp/routers/ttc/index/stops/${stopId}/routes`
+      )
+      .then((response: AxiosResponse<RoutesAtStopResponse>) =>
+        response.data
+          .map((routeData) => {
+            const probablyLegacyRouteNumberMatching =
+              LEGACY_ROUTES_NUMBERS_MATCHING.find(
+                (routeLegacy) => routeLegacy.legacyCode === routeData.shortName
+              );
+            return (
+              probablyLegacyRouteNumberMatching?.actualCode ??
+              routeData.shortName
+            );
+          })
+          .sort((a, b) => a.localeCompare(b))
+      );
+  },
   route:
     "https://transfer.msplus.ge:2443/otp/routers/ttc/routeInfo?routeNumber=101&type=bus",
   routeDTO: {
@@ -198,25 +232,25 @@ export const ArrivingApi = {
         })),
       }));
   },
-  routeScheme:
-    "https://transfer.msplus.ge:2443/otp/routers/ttc/schemeStops?routeNumber=101&forward=1",
-  routeSchemeDTO: {
-    DirectionDescription:
-      "Agrarian Univ. Dorm.>Ponichala Settlement>Rustavi Highway>Gulia Square>Baghdadi Str.>Isani M/S>Samgori M/S>Moscow Ave.>Javakheti Str.>Sukhishvili Str.>Takaishvili St r(Varketili IV M/D)",
-    Stops: [
-      {
-        Forward: false,
-        HasBoard: true,
-        Lat: 41.61093419581445,
-        Lon: 44.90071856152469,
-        Name: "Public School of Village Krtsanisi - [2949]",
-        Routes: ["101:1"],
-        StopId: "2949",
-        Type: "bus",
-        Virtual: false,
-      },
-    ],
-  },
+  /*  routeScheme:
+                      "https://transfer.msplus.ge:2443/otp/routers/ttc/schemeStops?routeNumber=101&forward=1",
+                    routeSchemeDTO: {
+                      DirectionDescription:
+                        "Agrarian Univ. Dorm.>Ponichala Settlement>Rustavi Highway>Gulia Square>Baghdadi Str.>Isani M/S>Samgori M/S>Moscow Ave.>Javakheti Str.>Sukhishvili Str.>Takaishvili St r(Varketili IV M/D)",
+                      Stops: [
+                        {
+                          Forward: false,
+                          HasBoard: true,
+                          Lat: 41.61093419581445,
+                          Lon: 44.90071856152469,
+                          Name: "Public School of Village Krtsanisi - [2949]",
+                          Routes: ["101:1"],
+                          StopId: "2949",
+                          Type: "bus",
+                          Virtual: false,
+                        },
+                      ],
+                    },*/
 };
 
 export default {};

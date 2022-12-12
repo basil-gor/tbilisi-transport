@@ -7,6 +7,7 @@
   <div v-else>You have no favorites stops</div>
   <br />
   <br />
+  <br />
   <h2>Routes:</h2>
   <RoutesTable
     v-if="favoritesRoutes.length !== 0"

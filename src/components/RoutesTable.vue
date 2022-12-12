@@ -2,14 +2,14 @@
   <table style="text-align: left">
     <thead>
       <tr>
-        <th>Number</th>
+        <th style="width: 60px">Number</th>
         <th class="table-middle-td">Route</th>
         <th style="width: 50px"></th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="route in routes" :key="route.id">
-        <td>
+        <td style="width: 60px">
           <RouterLink :to="`/route/${route.routeNumber}`"
             >{{ route.routeNumber }}
           </RouterLink>

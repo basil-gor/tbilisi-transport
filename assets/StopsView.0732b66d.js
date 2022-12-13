@@ -1,1 +1,0 @@
-import{u as s}from"./transport-stops.0c2073fd.js";import{d as t,s as r,u as e,a,h as p,o as n}from"./index.14b61233.js";import{S as m}from"./StopsTable.7a27ec02.js";import"./FavoriteButton.a0e7bbaf.js";const d=t({__name:"StopsView",setup(c){const{allStops:o}=r(s());return(u,l)=>e(o).length!==0?(n(),a(m,{key:0,stops:e(o)},null,8,["stops"])):p("",!0)}});export{d as default};

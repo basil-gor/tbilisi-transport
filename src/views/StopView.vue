@@ -14,7 +14,7 @@
       <tr>
         <th>Number</th>
         <th>Destination</th>
-        <th>Time</th>
+        <th style="text-align: right">Time</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +28,7 @@
           </RouterLink>
         </td>
         <td>{{ routeArriving.destinationStopName }}</td>
-        <td>{{ routeArriving.arrivalTime }}</td>
+        <td style="text-align: right">{{ routeArriving.arrivalTime }}</td>
       </tr>
     </tbody>
   </table>
@@ -46,13 +46,32 @@
       {{ index + 1 === routesAtStop?.length ? "." : "," }}
     </span>
   </div>
-  <span style="font-size: 10px; font-style: italic">
-    Note: there are more routes possible. We have no more actual available data.
-  </span>
+  <div
+    style="
+      font-size: 10px;
+      font-style: italic;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    "
+  >
+    <span style="color: #ff7758"> Note: </span>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 0 10px;
+      "
+    >
+      <span> There are more routes possible. </span>
+      <span>We have no more actual available data. </span>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import type { ArrivingInfoDTO, RouteInfoDTO } from "@/api/arriving";
 import { ArrivingApi } from "@/api/arriving";
 import { useRoute } from "vue-router";
@@ -69,12 +88,26 @@ const { getRouteByNumber } = useTransportRoutesStore();
 
 const currentStop = computed(() => getStopByCode(stopCode)); // TODO
 
-const arrivalTable = ref<ArrivingInfoDTO[]>();
-const routesIdsAtStop = ref<string[]>();
-const routesAtStop = ref<RouteInfoDTO[]>();
+const arrivalTable = ref<ArrivingInfoDTO[]>([]);
+const routesIdsAtStop = ref<string[]>([]);
+const routesAtStop = ref<RouteInfoDTO[]>([]);
 
-ArrivingApi.getArrivalTime(stopCode).then((value) => {
-  arrivalTable.value = value;
+const arrivalTableUpdaterId = ref<number>();
+
+const updateArrivalTable = () => {
+  return ArrivingApi.getArrivalTime(stopCode).then((value) => {
+    arrivalTable.value = value;
+  });
+};
+
+onMounted(() => {
+  updateArrivalTable().then(() => {
+    arrivalTableUpdaterId.value = setInterval(updateArrivalTable, 15000);
+  });
+});
+
+onBeforeUnmount(() => {
+  clearInterval(arrivalTableUpdaterId.value);
 });
 
 watch(

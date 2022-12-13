@@ -134,7 +134,10 @@ export const ArrivingApi = {
           stopA: routeInfo.StopA,
           stopB: routeInfo.StopB,
           type: routeInfo.Type,
-        }))
+        })) // Delete metro routes
+          .filter(
+            (route) => route.routeNumber !== "1" && route.routeNumber !== "2"
+          )
       );
   },
   getAllStops(): Promise<StopInfoDTO[]> {
@@ -147,37 +150,10 @@ export const ArrivingApi = {
             code: stop.code !== undefined ? stop.code : "", // TODO
             ...stop,
           }))
+          // Delete metro stops
+          .filter((stop) => stop.code !== "1" && stop.code !== "2")
       );
   },
-  routeStops:
-    "https://transfer.msplus.ge:2443/otp/routers/ttc/routeStops?routeNumber=101&forward=1",
-  routeStopsIn: {
-    Stops: [
-      {
-        Forward: false,
-        HasBoard: false,
-        Lat: 41.61093419581445,
-        Lon: 44.90071856152469,
-        Name: "Public School of Village Krtsanisi - [2949]",
-        Routes: [],
-        StopId: "2949",
-        Type: "bus",
-        Virtual: false,
-      },
-    ],
-  },
-  stopRoutes:
-    "https://transfer.msplus.ge:2443/otp/routers/ttc/index/stops/1:3260/routes",
-  routesOnStop: [
-    {
-      agencyName: "თბილისის სატრანსპორტო კომპანია",
-      color: "11518A",
-      id: "1:R13420",
-      longName: "მ/ს დიდუბე - მ/ს სახელმწიფო უნივერსიტეტი",
-      mode: "BUS",
-      shortName: "89",
-    },
-  ],
   /**
    * Именно id, а не code и именно id, а не name
    */
@@ -201,11 +177,6 @@ export const ArrivingApi = {
           })
           .sort((a, b) => a.localeCompare(b))
       );
-  },
-  route:
-    "https://transfer.msplus.ge:2443/otp/routers/ttc/routeInfo?routeNumber=101&type=bus",
-  routeDTO: {
-    //TODO
   },
   getRouteScheme(
     routeNumber: string,
@@ -232,25 +203,32 @@ export const ArrivingApi = {
         })),
       }));
   },
-  /*  routeScheme:
-                      "https://transfer.msplus.ge:2443/otp/routers/ttc/schemeStops?routeNumber=101&forward=1",
-                    routeSchemeDTO: {
-                      DirectionDescription:
-                        "Agrarian Univ. Dorm.>Ponichala Settlement>Rustavi Highway>Gulia Square>Baghdadi Str.>Isani M/S>Samgori M/S>Moscow Ave.>Javakheti Str.>Sukhishvili Str.>Takaishvili St r(Varketili IV M/D)",
-                      Stops: [
-                        {
-                          Forward: false,
-                          HasBoard: true,
-                          Lat: 41.61093419581445,
-                          Lon: 44.90071856152469,
-                          Name: "Public School of Village Krtsanisi - [2949]",
-                          Routes: ["101:1"],
-                          StopId: "2949",
-                          Type: "bus",
-                          Virtual: false,
-                        },
-                      ],
-                    },*/
 };
+
+// Another found api calls
+// TODO route stops
+/*routeStops:
+    "https://transfer.msplus.ge:2443/otp/routers/ttc/routeStops?routeNumber=101&forward=1",
+        routeStopsIn: {
+  Stops: [
+    {
+      Forward: false,
+      HasBoard: false,
+      Lat: 41.61093419581445,
+      Lon: 44.90071856152469,
+      Name: "Public School of Village Krtsanisi - [2949]",
+      Routes: [],
+      StopId: "2949",
+      Type: "bus",
+      Virtual: false,
+    },
+  ],
+},*/
+// TODO route stops with shape
+/*route:
+    "https://transfer.msplus.ge:2443/otp/routers/ttc/routeInfo?routeNumber=101&type=bus",
+        routeDTO: {
+  //TODO
+},*/
 
 export default {};

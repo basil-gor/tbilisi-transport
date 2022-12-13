@@ -1,5 +1,5 @@
 <template>
-  <table style="text-align: left">
+  <table style="text-align: left; width: 100%">
     <thead>
       <tr>
         <th style="width: 60px">Code</th>

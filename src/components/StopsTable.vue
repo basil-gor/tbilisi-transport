@@ -7,7 +7,7 @@
         <th style="width: 50px"></th>
       </tr>
     </thead>
-    <tbody ref="tbodyElement">
+    <tbody>
       <tr v-for="stop in stopsToView" :key="stop.id">
         <td style="width: 60px">
           <RouterLink :to="`/stop/${stop.code}`">{{ stop.code }}</RouterLink>
@@ -22,7 +22,7 @@
           />
         </td>
       </tr>
-      <tr v-if="isBigStopsCount">
+      <!--      <tr v-if="isBigStopsCount">
         <td
           style="text-align: center; cursor: pointer; color: lightblue"
           colspan="3"
@@ -30,7 +30,7 @@
         >
           Show More
         </td>
-      </tr>
+      </tr>-->
     </tbody>
   </table>
 </template>
@@ -38,32 +38,57 @@
 <script setup lang="ts">
 import type { StopInfoDTO } from "@/api/arriving";
 import { useTransportStopsStore } from "@/stores/transport-stops";
-import { ref } from "vue";
+import { ref, toRefs, watch } from "vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
+import { useInfiniteScroll } from "@vueuse/core";
 
 const props = defineProps<{
   stops: StopInfoDTO[];
 }>();
 
-// TODO
-const isBigStopsCount = props.stops.length > 100;
+const { stops } = toRefs(props);
 
-const tbodyElement = ref<HTMLElement>();
-const offset = 100;
+// TODO update this ugly logic
+const isBigStopsCount = ref(false);
+
+const offset = 50;
 let lastVirtualPageIndex = 1;
-const stopsToView = ref(
-  isBigStopsCount ? props.stops.slice(0, offset) : props.stops
+const stopsToView = ref<StopInfoDTO[]>([]);
+
+watch(
+  stops,
+  () => {
+    isBigStopsCount.value = stops.value.length > 100;
+    stopsToView.value = isBigStopsCount.value
+      ? stops.value.slice(0, offset)
+      : stops.value;
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
 );
 
 const showMore = () => {
   const lastAddItemIndex = lastVirtualPageIndex * offset;
   lastVirtualPageIndex += 1;
-  const dataToAdd = props.stops.slice(
+  const dataToAdd = stops.value.slice(
     lastAddItemIndex,
     lastVirtualPageIndex * offset
   );
   stopsToView.value.push(...dataToAdd);
 };
+
+useInfiniteScroll(
+  ref(document),
+  () => {
+    if (!isBigStopsCount.value) {
+      return;
+    }
+    showMore();
+  },
+  { distance: 10 }
+);
 
 const { addOrRemoveStopInFavorites, isStopInFavorites } =
   useTransportStopsStore();

@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="route in routes" :key="route.id">
+      <tr v-for="route in routesToView" :key="route.id">
         <td style="width: 60px">
           <RouterLink :to="`/route/${route.routeNumber}`"
             >{{ route.routeNumber }}
@@ -37,15 +37,61 @@
 <script setup lang="ts">
 import type { RouteInfoDTO } from "@/api/arriving";
 import type { PropType } from "vue";
+import { ref, toRefs, watch } from "vue";
 import FavoriteButton from "@/components/FavoriteButton.vue";
 import { useTransportRoutesStore } from "@/stores/transport-routes";
+import { useInfiniteScroll } from "@vueuse/core";
 
-defineProps({
+const props = defineProps({
   routes: {
     type: Array as PropType<RouteInfoDTO[]>,
     required: true,
   },
 });
+
+const { routes } = toRefs(props);
+
+// TODO update this ugly logic
+const isBigRoutesCount = ref(false);
+
+const offset = 50;
+let lastVirtualPageIndex = 1;
+const routesToView = ref<RouteInfoDTO[]>([]);
+
+watch(
+  routes,
+  () => {
+    isBigRoutesCount.value = routes.value.length > 100;
+    routesToView.value = isBigRoutesCount.value
+      ? routes.value.slice(0, offset)
+      : routes.value;
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
+
+const showMore = () => {
+  const lastAddItemIndex = lastVirtualPageIndex * offset;
+  lastVirtualPageIndex += 1;
+  const dataToAdd = routes.value.slice(
+    lastAddItemIndex,
+    lastVirtualPageIndex * offset
+  );
+  routesToView.value.push(...dataToAdd);
+};
+
+useInfiniteScroll(
+  ref(document),
+  () => {
+    if (!isBigRoutesCount.value) {
+      return;
+    }
+    showMore();
+  },
+  { distance: 10 }
+);
 
 const { addOrRemoveRouteInFavorites, isRouteInFavorites } =
   useTransportRoutesStore();

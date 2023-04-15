@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <AppTttle msg="Tbilisi transport" />
+      <AppTitle msg="Tbilisi transport" />
 
       <nav>
         <RouterLink to="/favorites">Favorites</RouterLink>
@@ -9,6 +9,7 @@
         <RouterLink to="/stops">Stops</RouterLink>
       </nav>
     </div>
+    <ThemeModeButton class="theme-mode-toggle" />
   </header>
   <main>
     <RouterView />
@@ -17,13 +18,19 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import AppTttle from "./components/AppTttle.vue";
+import AppTitle from "./components/AppTitle.vue";
+import ThemeModeButton from "@/components/ThemeModeButton.vue";
 </script>
 
 <style scoped>
 header {
+  display: flex;
   line-height: 1.5;
   max-height: 100vh;
+}
+
+.wrapper {
+  flex: 1;
 }
 
 nav {
@@ -74,5 +81,10 @@ nav a:first-of-type {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
+}
+
+.theme-mode-toggle {
+  align-self: start;
+  margin: 10px 0px 10px 10px;
 }
 </style>

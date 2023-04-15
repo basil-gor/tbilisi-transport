@@ -25,14 +25,14 @@ const inputModel = useVModel(props, "value", emit);
 }
 
 .button {
-  color: white;
+  color: var(--color-heading);
   border: 1px solid #0aa0c9;
   border-radius: 8px;
   padding: 5px 15px;
   font-size: 16px;
   background: transparent;
   /*  filter: drop-shadow(0 0 5px #0aa0c9) drop-shadow(0 0 5px #0aa0c9) contrast(2)
-      brightness(2);*/
+          brightness(2);*/
   /*filter: drop-shadow(0 0 5px #0aa0c9) contrast(2) brightness(2) opacity(0.5);*/
   box-shadow: 0px 0px 5px 1px #0aa0c980;
   transition: 0.5s;

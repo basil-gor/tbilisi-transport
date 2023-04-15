@@ -124,7 +124,7 @@ const isOnewayDirectionRoute = computed(
 
 .route-view-header__direction-switcher {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   cursor: pointer;
   color: #0aa0c9;

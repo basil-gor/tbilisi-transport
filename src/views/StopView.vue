@@ -8,6 +8,9 @@
       @click="addOrRemoveStopInFavorites(stopCode)"
     />
   </h2>
+  <h4 v-if="currentStop !== undefined" style="opacity: 0.7">
+    {{ currentStop.name }}
+  </h4>
   <br />
   <table style="text-align: left; width: 100%">
     <thead>
